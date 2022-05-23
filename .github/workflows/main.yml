@@ -1,0 +1,12 @@
+on: [push]
+
+name: Stereo Vision Push
+
+jobs:
+  publish-code:
+    runs-on: self-hosted
+    steps:
+    # checkout branch
+    - uses: actions/checkout@master
+    - name: Restart service
+      run: sudo systemctl status utility-telegram-bot.service

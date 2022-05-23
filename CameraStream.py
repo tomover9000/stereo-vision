@@ -1,5 +1,6 @@
 import cv2
 
+
 class CameraStream:
     def __init__(self, camera_id) -> None:
         self.id = camera_id
