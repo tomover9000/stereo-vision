@@ -9,4 +9,4 @@ jobs:
     # checkout branch
     - uses: actions/checkout@master
     - name: Restart service
-      run: sudo systemctl status utility-telegram-bot.service
+      run: sudo systemctl restart stereo-vision.service
