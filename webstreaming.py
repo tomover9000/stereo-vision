@@ -21,8 +21,11 @@ img_op = ImageOperations(camera1, camera2)
 def decode_image(img_string):
     return cv2.imdecode(np.frombuffer(base64.b64decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def index():
+	if request.method == "POST":
+		todo = request.form.get("todo")
+		print(todo)
 	# return the rendered template
 	return render_template("index.html")
 
@@ -47,9 +50,9 @@ def processed_image():
 	return Response(img_op.gen_disp_map(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-@app.route('/', methods=['POST'])
-def greet():
-    if 'name' in request.form:
-        name = request.form['name']
-        return jsonify(message=f'Hello, {name}.')
-    return '', 400
+@app.route('/upload', methods=['POST'])
+def upload():
+    # Same cool stuff here.
+    print(request.form.get('data'))
+
+    return jsonify(message='success')
