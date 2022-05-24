@@ -44,6 +44,6 @@ def video_feed2():
 def processed_image():
 	# return the response generated along with the specific media
 	# type (mime type)
-	return Response(img_op.gen_gray_img(),
+	return Response(img_op.gen_disp_map(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 

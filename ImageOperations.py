@@ -20,3 +20,15 @@ class ImageOperations:
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+    def gen_disp_map(self):
+        while True:
+            imgR = self.cam1.get_frame()
+            imgL = self.cam2.get_frame()
+
+            stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
+            disparity = stereo.compute(imgL, imgR)
+            ret, buffer = cv2.imencode('.jpg', disparity)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
