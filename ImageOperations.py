@@ -2,8 +2,6 @@ import cv2
 import numpy as np
 from CameraStream import CameraStream
 
-DEPTH_VISUALIZATION_SCALE = 2048
-
 class ImageOperations:
     def __init__(self, camera1, camera2) -> None:
         self.cam1 = camera1
@@ -44,7 +42,7 @@ class ImageOperations:
             imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
             
-            disparity = self.stereo.compute(imgL_gray, imgR_gray) / DEPTH_VISUALIZATION_SCALE
+            disparity = self.stereo.compute(imgL_gray, imgR_gray)
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
