@@ -1,5 +1,5 @@
 #Import necessary libraries
-from flask import Flask, render_template, Response, send_file
+from flask import Flask, jsonify, render_template, Response, send_file
 from CameraStream import CameraStream
 import cv2
 
@@ -30,14 +30,12 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 # 	return Response(camera2.gen_frames(),
 # 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-@app.route("/image1")
-def image1():
-	return Response(camera1.get_frame(),
- 		mimetype = "multipart/x-mixed-replace; boundary=frame")
+@app.route("/get_images")
+def get_images():
+	img1 = camera1.get_frame()
+	img2 = camera2.get_frame()
 
-@app.route("/image2")
-def image2():
-	return Response(camera2.get_frame(),
- 		mimetype = "multipart/x-mixed-replace; boundary=frame")
-    
-
+	return jsonify({
+		'img1': img1,
+		'img2': img2
+	})
