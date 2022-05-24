@@ -6,7 +6,11 @@
                 <img src="{{url_for('processed_image')}}" width="1280", height="720">
             </div>
             <form method="post" id="todo-form">
-                <input type="text" name="todo" id="todo">
+                MinDisparity:<input type="text" name="MinDisparity" id="MinDisparity">
+                NumDisparities:<input type="text" name="NumDisparities" id="NumDisparities">
+                BlockSize<input type="text" name="BlockSize" id="BlockSize">
+                SpeckleRange:<input type="text" name="SpeckleRange" id="SpeckleRange">
+                SpeckleWindowSize:<input type="text" name="SpeckleWindowSize" id="SpeckleWindowSize">
                 <button type="submit">submit</button>
             </form>
          
@@ -24,7 +28,11 @@
                 type:'POST',
                 url:'/',
                 data:{
-                  todo:$("#todo").val()
+                  MinDisparity:$("#MinDisparity").val(),
+                  NumDisparities:$("#NumDisparities").val(),
+                  BlockSize:$("#BlockSize").val(),
+                  SpeckleRange:$("#SpeckleRange").val(),
+                  SpeckleWindowSize:$("#SpeckleWindowSize").val()  
                 },
                 success:function()
                 {

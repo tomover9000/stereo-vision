@@ -1,4 +1,5 @@
 #Import necessary libraries
+from ast import Num
 from crypt import methods
 from flask import Flask, jsonify, render_template, Response, send_file, request
 from CameraStream import CameraStream
@@ -24,8 +25,12 @@ def decode_image(img_string):
 @app.route("/", methods=["POST", "GET"])
 def index():
 	if request.method == "POST":
-		todo = request.form.get("todo")
-		print(todo)
+		MinDisparity = request.form.get("MinDisparity")
+		NumDisparities = request.form.get("NumDisparities")
+		BlockSize = request.form.get("BlockSize")
+		SpeckleRange = request.form.get("SpeckleRange")
+		SpeckleWindowSize = request.form.get("SpeckleWindowSize")
+		img_op.set_params(MinDisparity, NumDisparities, BlockSize, SpeckleRange, SpeckleWindowSize)
 	# return the rendered template
 	return render_template("index.html")
 

@@ -16,6 +16,13 @@ class ImageOperations:
     def __del__(self):
         pass
 
+    def set_params(self, MinDisparity, NumDisparities, BlockSize, SpeckleRange, SpeckleWindowSize):
+        self.stereo.setMinDisparity(MinDisparity)
+        self.stereo.setNumDisparities(NumDisparities)
+        self.stereo.setBlockSize(BlockSize)
+        self.stereo.setSpeckleRange(SpeckleRange)
+        self.stereo.setSpeckleWindowSize(SpeckleWindowSize)
+
     def gen_gray_img(self):
         while True:
             frame = self.cam2.get_frame()
