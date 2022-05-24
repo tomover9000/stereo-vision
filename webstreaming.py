@@ -25,11 +25,11 @@ def decode_image(img_string):
 @app.route("/", methods=["POST", "GET"])
 def index():
 	if request.method == "POST":
-		MinDisparity = request.form.get("MinDisparity")
-		NumDisparities = request.form.get("NumDisparities")
-		BlockSize = request.form.get("BlockSize")
-		SpeckleRange = request.form.get("SpeckleRange")
-		SpeckleWindowSize = request.form.get("SpeckleWindowSize")
+		MinDisparity = int(request.form.get("MinDisparity"))
+		NumDisparities = int(request.form.get("NumDisparities"))
+		BlockSize = int(request.form.get("BlockSize"))
+		SpeckleRange = int(request.form.get("SpeckleRange"))
+		SpeckleWindowSize = int(request.form.get("SpeckleWindowSize"))
 		img_op.set_params(MinDisparity, NumDisparities, BlockSize, SpeckleRange, SpeckleWindowSize)
 	# return the rendered template
 	return render_template("index.html")
