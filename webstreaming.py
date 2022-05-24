@@ -47,3 +47,8 @@ def processed_image():
 	return Response(img_op.gen_disp_map(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
+
+@app.route("/post_field", methods=["GET", "POST"])
+def need_input():
+    for key, value in request.form.items():
+        print("key: {0}, value: {1}".format(key, value))

@@ -3,9 +3,12 @@
         <div class="row">
             <div class="col-lg-8  offset-lg-2">
                 <h3 class="mt-5">Live Webcam</h3>
-                <img src="{{url_for('video_feed1')}}" width="1280", height="720">
-                <img src="{{url_for('video_feed2')}}" width="1280", height="720">
+                <img src="{{url_for('processed_image')}}" width="1280", height="720">
             </div>
+            <form action="/post_field" method="post">
+                <input type="hidden" name="this_name" value="value1" />
+                <input type="submit" value="Press Me!"/>
+            </form>
         </div>
     </div>
     </body>
