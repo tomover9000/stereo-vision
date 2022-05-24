@@ -39,6 +39,21 @@ def index():
 # 	return Response(camera2.gen_frames(),
 # 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
+def read_final_img():
+	while True:
+		img = cv2.imread(PROJECT_PATH + 'static/images/img1.jpg', flags=1)
+		ret, buffer = cv2.imencode('.jpg', img)
+		frame = buffer.tobytes()
+		yield (b'--frame\r\n'
+			b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+@app.route("/get_final_image")
+def get_final_image():
+	# return the response generated along with the specific media
+	# type (mime type)
+	return Response(read_final_img(),
+		mimetype = "multipart/x-mixed-replace; boundary=frame")
+
 @app.route("/get_images")
 def get_images():
 	img1_text = base64.b64encode(camera1.get_frame())
