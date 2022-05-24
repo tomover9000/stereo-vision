@@ -21,7 +21,6 @@ class CameraStream:
     
     def get_frame(self):
         success, frame = self.cam.read()  # read the camera frame
-        print(type(frame))
         if not success:
             return
         else:
