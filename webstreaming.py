@@ -53,7 +53,7 @@ def get_images():
 def post_images():
 	input_json = request.get_json(force=True)
 	img1 = decode_image(input_json['img1'])
-	cv2.imwrite(PROJECT_PATH + 'images/img1.jpg', img1)
+	cv2.imwrite(PROJECT_PATH + 'static/images/img1.jpg', img1)
 	dict_returned = {'state': 200}
 	return jsonify(dict_returned)
 
