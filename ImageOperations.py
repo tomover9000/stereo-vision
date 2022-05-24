@@ -1,8 +1,10 @@
 import cv2
 import numpy as np
 from CameraStream import CameraStream
-from webstreaming import PROJECT_PATH
 from time import sleep
+
+PROJECT_PATH = '/home/pi/actions-runner/_work/stereo-vision/stereo-vision/'
+
 
 class ImageOperations:
     def __init__(self, camera1, camera2) -> None:
