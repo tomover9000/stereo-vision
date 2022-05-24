@@ -44,8 +44,8 @@ class ImageOperations:
             imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
             
-            disparity = self.stereo.compute(imgL_gray, imgR_gray)
+            disparity = self.stereo.compute(imgL_gray, imgR_gray) / DEPTH_VISUALIZATION_SCALE
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame / DEPTH_VISUALIZATION_SCALE + b'\r\n')  # concat frame one by one and show result
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
