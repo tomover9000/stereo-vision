@@ -1,5 +1,4 @@
 #Import necessary libraries
-from socket import send_fds
 from flask import Flask, render_template, Response, send_file
 from CameraStream import CameraStream
 import cv2
