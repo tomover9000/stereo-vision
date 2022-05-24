@@ -9,6 +9,8 @@ import base64
 CAMERA_WIDTH = 1280
 CAMERA_HEIGHT = 720
 
+PROJECT_PATH = '/home/pi/actions-runner/_work/stereo-vision/stereo-vision/'
+
 #Initialize the Flask app
 app = Flask(__name__)
 camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
@@ -51,7 +53,7 @@ def get_images():
 def post_images():
 	input_json = request.get_json(force=True)
 	img1 = decode_image(input_json['img1'])
-	cv2.imwrite('images/img1.jpg', img1)
+	cv2.imwrite(PROJECT_PATH + 'images/img1.jpg', img1)
 	dict_returned = {'state': 200}
 	return jsonify(dict_returned)
 
