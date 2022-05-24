@@ -11,10 +11,10 @@ app = Flask(__name__)
 camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
 camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
-@app.route("/")
-def index():
-	# return the rendered template
-	return render_template("index.html")
+# @app.route("/")
+# def index():
+# 	# return the rendered template
+# 	return render_template("index.html")
 
 @app.route("/video_feed1")
 def video_feed1():
