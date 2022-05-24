@@ -6,7 +6,7 @@ import cv2
 #Initialize the Flask app
 app = Flask(__name__)
 camera1 = CameraStream(0)
-camera2 = CameraStream(3)
+camera2 = CameraStream(2)
 
 @app.route("/")
 def index():
