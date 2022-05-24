@@ -19,10 +19,10 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 def decode_image(img_string):
     return cv2.imdecode(np.frombuffer(base64.b64decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
 
-# @app.route("/")
-# def index():
-# 	# return the rendered template
-# 	return render_template("index.html")
+@app.route("/")
+def index():
+	# return the rendered template
+	return render_template("index.html")
 
 # @app.route("/video_feed1")
 # def video_feed1():
