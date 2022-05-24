@@ -6,6 +6,12 @@ class ImageOperations:
     def __init__(self, camera1, camera2) -> None:
         self.cam1 = camera1
         self.cam2 = camera2
+        self.stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
+        self.stereo.setMinDisparity(4)
+        self.stereo.setNumDisparities(128)
+        self.stereo.setBlockSize(21)
+        self.stereo.setSpeckleRange(16)
+        self.stereo.setSpeckleWindowSize(45)
     
     def __del__(self):
         pass
@@ -28,8 +34,8 @@ class ImageOperations:
             imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
             imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
-            stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
-            disparity = stereo.compute(imgL_gray, imgR_gray)
+            
+            disparity = self.stereo.compute(imgL_gray, imgR_gray)
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
