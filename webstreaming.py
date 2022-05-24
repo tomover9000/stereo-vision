@@ -1,6 +1,9 @@
 #Import necessary libraries
+from crypt import methods
 from flask import Flask, jsonify, render_template, Response, send_file
+from requests import request
 from CameraStream import CameraStream
+import numpy as np
 import cv2
 import base64
 
@@ -11,6 +14,10 @@ CAMERA_HEIGHT = 720
 app = Flask(__name__)
 camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
 camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
+
+
+def decode_image(img_string):
+    return cv2.imdecode(np.frombuffer(base64.decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
 
 # @app.route("/")
 # def index():
@@ -33,10 +40,19 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
 @app.route("/get_images")
 def get_images():
-	img1_text = base64.b64encode(camera1.get_frame())
-	img2_text = base64.b64encode(camera2.get_frame())
+	img1_text = base64.encode(camera1.get_frame())
+	img2_text = base64.encode(camera2.get_frame())
 
 	return jsonify({
 		'img1': img1_text,
 		'img2': img2_text
 	})
+
+@app.route("/post_images", methods=['POST'])
+def post_images():
+	input_json = request.get_json(force=True)
+	img1 = decode_image(input_json['img1'])
+	cv2.imwrite('images/img1.jpg', img1)
+	dict_returned = {'state': 200}
+	return jsonify(dict_returned)
+
