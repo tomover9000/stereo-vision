@@ -1,7 +1,6 @@
 #Import necessary libraries
 from crypt import methods
 from flask import Flask, jsonify, render_template, Response, send_file, request
-from requests import request
 from CameraStream import CameraStream
 import numpy as np
 import cv2
@@ -50,7 +49,7 @@ def get_images():
 
 @app.route("/post_images", methods=['POST'])
 def post_images():
-	input_json = request.get_json(force=True)
+	input_json = request.json
 	img1 = decode_image(input_json['img1'])
 	cv2.imwrite('images/img1.jpg', img1)
 	dict_returned = {'state': 200}
