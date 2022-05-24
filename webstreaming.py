@@ -32,10 +32,12 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
 @app.route("/image1")
 def image1():
-	return send_file(camera1.get_frame(), mimetype='image/gif')
+	return Response(camera1.get_frame(),
+ 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/image2")
 def image2():
-	return send_file(camera2.get_frame(), mimetype='image/gif')
+	return Response(camera2.get_frame(),
+ 		mimetype = "multipart/x-mixed-replace; boundary=frame")
     
 
