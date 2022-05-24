@@ -7,6 +7,7 @@ from ImageOperations import ImageOperations
 import numpy as np
 import cv2
 import base64
+from time import sleep
 
 CAMERA_WIDTH = 1280
 CAMERA_HEIGHT = 720
@@ -33,6 +34,13 @@ def index():
 		img_op.set_params(MinDisparity, NumDisparities, BlockSize, SpeckleRange, SpeckleWindowSize)
 	# return the rendered template
 	return render_template("index.html")
+
+@app.route("/capture_calibration_photos")
+def cap_calib_photos():
+	# return the response generated along with the specific media
+	# type (mime type)
+	return Response(img_op.capture_calib_photos(),
+		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/video_feed1")
 def video_feed1():

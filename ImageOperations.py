@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 from CameraStream import CameraStream
+from webstreaming import PROJECT_PATH
+from time import sleep
 
 class ImageOperations:
     def __init__(self, camera1, camera2) -> None:
@@ -42,6 +44,24 @@ class ImageOperations:
 
             disparity = self.stereo.compute(imgL_gray, imgR_gray)
             ret, buffer = cv2.imencode('.jpg', disparity)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+
+    def capture_calib_photos(self):
+        for i in range(1, 12):
+            left_cam = self.cam1.get_frame()
+            right_cam = self.cam2.get_frame()
+
+            cv2.imwrite(PROJECT_PATH + "data/stereoL/img%d.png"%i, left_cam)
+            cv2.imwrite(PROJECT_PATH + "data/stereoR/img%d.png"%i, right_cam)
+
+            sleep(1)
+
+            print("wrinting pictures for calibration no {}", i)
+
+            ret, buffer = cv2.imencode('.jpg', left_cam)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result

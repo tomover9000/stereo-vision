@@ -25,15 +25,15 @@ for i in tqdm(range(1,12)):
 	outputL = imgL.copy()
 	outputR = imgR.copy()
 
-	retR, cornersR =  cv2.findChessboardCorners(outputR,(9,6),None)
-	retL, cornersL = cv2.findChessboardCorners(outputL,(9,6),None)
+	retR, cornersR =  cv2.findChessboardCorners(outputR,(8,8),None)
+	retL, cornersL = cv2.findChessboardCorners(outputL,(8,8),None)
 
 	if retR and retL:
 		obj_pts.append(objp)
 		cv2.cornerSubPix(imgR_gray,cornersR,(11,11),(-1,-1),criteria)
 		cv2.cornerSubPix(imgL_gray,cornersL,(11,11),(-1,-1),criteria)
-		cv2.drawChessboardCorners(outputR,(9,6),cornersR,retR)
-		cv2.drawChessboardCorners(outputL,(9,6),cornersL,retL)
+		cv2.drawChessboardCorners(outputR,(8,8),cornersR,retR)
+		cv2.drawChessboardCorners(outputL,(8,8),cornersL,retL)
 		cv2.imshow('cornersR',outputR)
 		cv2.imshow('cornersL',outputL)
 		cv2.waitKey(0)
