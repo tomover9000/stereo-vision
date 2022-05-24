@@ -16,8 +16,8 @@ PROJECT_PATH = '/home/pi/actions-runner/_work/stereo-vision/stereo-vision/'
 
 #Initialize the Flask app
 app = Flask(__name__)
-camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
-camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
+camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT, side='left')
+camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT, side='right')
 img_op = ImageOperations(camera1, camera2)
 
 def decode_image(img_string):

@@ -16,7 +16,7 @@ img_ptsL = []
 img_ptsR = []
 obj_pts = []
 
-for i in tqdm(range(1,12)):
+for i in tqdm(range(6,12)):
 	imgL = cv2.imread(pathL+"img%d.png"%i)
 	imgR = cv2.imread(pathR+"img%d.png"%i)
 	imgL_gray = cv2.imread(pathL+"img%d.png"%i,0)
@@ -34,9 +34,9 @@ for i in tqdm(range(1,12)):
 		cv2.cornerSubPix(imgL_gray,cornersL,(11,11),(-1,-1),criteria)
 		cv2.drawChessboardCorners(outputR,(7,6),cornersR,retR)
 		cv2.drawChessboardCorners(outputL,(7,6),cornersL,retL)
-		# cv2.imshow('cornersR',outputR)
-		# cv2.imshow('cornersL',outputL)
-		# cv2.waitKey(0)
+		cv2.imshow('cornersR',outputR)
+		cv2.imshow('cornersL',outputL)
+		cv2.waitKey(0)
 
 		img_ptsL.append(cornersL)
 		img_ptsR.append(cornersR)
@@ -79,6 +79,25 @@ cv_file.write("Left_Stereo_Map_y",Left_Stereo_Map[1])
 cv_file.write("Right_Stereo_Map_x",Right_Stereo_Map[0])
 cv_file.write("Right_Stereo_Map_y",Right_Stereo_Map[1])
 cv_file.release()
+
+
+cv2.imshow("Left image before rectification", imgL)
+cv2.imshow("Right image before rectification", imgR)
+
+Left_nice= cv2.remap(imgL,Left_Stereo_Map[0],Left_Stereo_Map[1], cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+Right_nice= cv2.remap(imgR,Right_Stereo_Map[0],Right_Stereo_Map[1], cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+
+cv2.imshow("Left image after rectification", Left_nice)
+cv2.imshow("Right image after rectification", Right_nice)
+cv2.waitKey(0)
+
+out = Right_nice.copy()
+out[:,:,0] = Right_nice[:,:,0]
+out[:,:,1] = Right_nice[:,:,1]
+out[:,:,2] = Left_nice[:,:,2]
+
+cv2.imshow("Output image", out)
+cv2.waitKey(0)
 
 
 
