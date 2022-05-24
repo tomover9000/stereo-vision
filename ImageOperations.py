@@ -28,7 +28,6 @@ class ImageOperations:
             frame = self.cam2.get_frame()
             img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-
             ret, buffer = cv2.imencode('.jpg', img_gray)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -41,7 +40,6 @@ class ImageOperations:
             imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
             imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
-            
             disparity = self.stereo.compute(imgL_gray, imgR_gray)
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
