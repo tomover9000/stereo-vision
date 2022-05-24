@@ -21,10 +21,14 @@ class CameraStream:
     
     def get_frame(self):
         success, frame = self.cam.read()  # read the camera frame
+        print(type(frame))
         if not success:
             return
         else:
-            return frame
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            return (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     def __del__(self):
         self.cam.release()
