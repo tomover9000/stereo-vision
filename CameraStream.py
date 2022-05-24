@@ -24,9 +24,7 @@ class CameraStream:
         if not success:
             return
         else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-        return frame
+            return frame
         
 
     def __del__(self):
