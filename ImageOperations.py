@@ -25,9 +25,11 @@ class ImageOperations:
         while True:
             imgR = self.cam1.get_frame()
             imgL = self.cam2.get_frame()
+            imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
+            imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
             stereo = cv2.StereoBM_create(numDisparities=16, blockSize=15)
-            disparity = stereo.compute(imgL, imgR)
+            disparity = stereo.compute(imgL_gray, imgR_gray)
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
