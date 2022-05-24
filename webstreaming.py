@@ -49,7 +49,7 @@ def get_images():
 
 @app.route("/post_images", methods=['POST'])
 def post_images():
-	input_json = request.json
+	input_json = request.get_json(force=True)
 	img1 = decode_image(input_json['img1'])
 	cv2.imwrite('images/img1.jpg', img1)
 	dict_returned = {'state': 200}
