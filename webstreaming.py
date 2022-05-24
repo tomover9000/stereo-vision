@@ -9,8 +9,8 @@ import cv2
 import base64
 from time import sleep
 
-CAMERA_WIDTH = 640
-CAMERA_HEIGHT = 480
+CAMERA_WIDTH = 1920
+CAMERA_HEIGHT = 1080
 
 PROJECT_PATH = '/home/pi/actions-runner/_work/stereo-vision/stereo-vision/'
 
