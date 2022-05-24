@@ -17,7 +17,7 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
 
 def decode_image(img_string):
-    return cv2.imdecode(np.frombuffer(base64.decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
+    return cv2.imdecode(np.frombuffer(base64.b64decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
 
 # @app.route("/")
 # def index():
@@ -40,8 +40,8 @@ def decode_image(img_string):
 
 @app.route("/get_images")
 def get_images():
-	img1_text = base64.encode(camera1.get_frame())
-	img2_text = base64.encode(camera2.get_frame())
+	img1_text = base64.b64encode(camera1.get_frame())
+	img2_text = base64.b64encode(camera2.get_frame())
 
 	return jsonify({
 		'img1': img1_text,
