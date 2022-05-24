@@ -52,7 +52,7 @@ class ImageOperations:
 
 
     def capture_calib_photos(self):
-        for i in range(1, 12):
+        for i in range(1, 50):
             left_cam = self.cam1.get_frame()
             right_cam = self.cam2.get_frame()
 
