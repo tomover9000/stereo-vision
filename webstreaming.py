@@ -1,6 +1,6 @@
 #Import necessary libraries
 from crypt import methods
-from flask import Flask, jsonify, render_template, Response, send_file
+from flask import Flask, jsonify, render_template, Response, send_file, request
 from requests import request
 from CameraStream import CameraStream
 import numpy as np
