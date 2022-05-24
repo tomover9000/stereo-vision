@@ -9,8 +9,8 @@ pathR = "./data/stereoR/"
 # Termination criteria for refining the detected corners
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
-objp = np.zeros((9*6,3), np.float32)
-objp[:,:2] = np.mgrid[0:9,0:6].T.reshape(-1,2)
+objp = np.zeros((6*7,3), np.float32)
+objp[:,:2] = np.mgrid[0:6,0:7].T.reshape(-1,2)
 
 img_ptsL = []
 img_ptsR = []
@@ -25,18 +25,18 @@ for i in tqdm(range(1,12)):
 	outputL = imgL.copy()
 	outputR = imgR.copy()
 
-	retR, cornersR =  cv2.findChessboardCorners(outputR,(8,8),None)
-	retL, cornersL = cv2.findChessboardCorners(outputL,(8,8),None)
+	retR, cornersR =  cv2.findChessboardCorners(outputR,(7,6),None)
+	retL, cornersL = cv2.findChessboardCorners(outputL,(7,6),None)
 
 	if retR and retL:
 		obj_pts.append(objp)
 		cv2.cornerSubPix(imgR_gray,cornersR,(11,11),(-1,-1),criteria)
 		cv2.cornerSubPix(imgL_gray,cornersL,(11,11),(-1,-1),criteria)
-		cv2.drawChessboardCorners(outputR,(8,8),cornersR,retR)
-		cv2.drawChessboardCorners(outputL,(8,8),cornersL,retL)
-		cv2.imshow('cornersR',outputR)
-		cv2.imshow('cornersL',outputL)
-		cv2.waitKey(0)
+		cv2.drawChessboardCorners(outputR,(7,6),cornersR,retR)
+		cv2.drawChessboardCorners(outputL,(7,6),cornersL,retL)
+		# cv2.imshow('cornersR',outputR)
+		# cv2.imshow('cornersL',outputL)
+		# cv2.waitKey(0)
 
 		img_ptsL.append(cornersL)
 		img_ptsR.append(cornersR)
