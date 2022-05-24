@@ -29,8 +29,8 @@ class ImageOperations:
 
     def gen_disp_map(self):
         while True:
-            imgR = self.cam1.get_frame()
-            imgL = self.cam2.get_frame()
+            imgL = self.cam1.get_frame()
+            imgR = self.cam2.get_frame()
             imgR_gray = cv2.cvtColor(imgR, cv2.COLOR_BGR2GRAY)
             imgL_gray = cv2.cvtColor(imgL, cv2.COLOR_BGR2GRAY)
 
