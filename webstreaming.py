@@ -47,6 +47,9 @@ def processed_image():
 	return Response(img_op.gen_disp_map(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    return 'You entered: {}'.format(request.form['text'])
+@app.route('/', methods=['POST'])
+def greet():
+    if 'name' in request.form:
+        name = request.form['name']
+        return jsonify(message=f'Hello, {name}.')
+    return '', 400
