@@ -2,6 +2,7 @@
 from crypt import methods
 from flask import Flask, jsonify, render_template, Response, send_file, request
 from CameraStream import CameraStream
+from ImageOperations import ImageOperations
 import numpy as np
 import cv2
 import base64
@@ -15,7 +16,7 @@ PROJECT_PATH = '/home/pi/actions-runner/_work/stereo-vision/stereo-vision/'
 app = Flask(__name__)
 camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
 camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
-
+img_op = ImageOperations(camera1, camera2)
 
 def decode_image(img_string):
     return cv2.imdecode(np.frombuffer(base64.b64decode(img_string), dtype=np.uint8), cv2.IMREAD_COLOR)
@@ -25,50 +26,24 @@ def index():
 	# return the rendered template
 	return render_template("index.html")
 
-# @app.route("/video_feed1")
-# def video_feed1():
-# 	# return the response generated along with the specific media
-# 	# type (mime type)
-# 	return Response(camera1.gen_frames(),
-# 		mimetype = "multipart/x-mixed-replace; boundary=frame")
-
-# @app.route("/video_feed2")
-# def video_feed2():
-# 	# return the response generated along with the specific media
-# 	# type (mime type)
-# 	return Response(camera2.gen_frames(),
-# 		mimetype = "multipart/x-mixed-replace; boundary=frame")
-
-def read_final_img():
-	while True:
-		img = cv2.imread(PROJECT_PATH + 'static/images/img1.jpg', flags=1)
-		ret, buffer = cv2.imencode('.jpg', img)
-		frame = buffer.tobytes()
-		yield (b'--frame\r\n'
-			b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
-@app.route("/get_final_image")
-def get_final_image():
+@app.route("/video_feed1")
+def video_feed1():
 	# return the response generated along with the specific media
 	# type (mime type)
-	return Response(read_final_img(),
+	return Response(camera1.gen_frames(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-@app.route("/get_images")
-def get_images():
-	img1_text = base64.b64encode(camera1.get_frame())
-	img2_text = base64.b64encode(camera2.get_frame())
+@app.route("/video_feed2")
+def video_feed2():
+	# return the response generated along with the specific media
+	# type (mime type)
+	return Response(camera2.gen_frames(),
+		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
-	return jsonify({
-		'img1': img1_text,
-		'img2': img2_text
-	})
-
-@app.route("/post_images", methods=['POST'])
-def post_images():
-	input_json = request.get_json(force=True)
-	img1 = decode_image(input_json['img1'])
-	cv2.imwrite(PROJECT_PATH + 'static/images/img1.jpg', img1)
-	dict_returned = {'state': 200}
-	return jsonify(dict_returned)
+@app.route('/processed_image')
+def processed_image():
+	# return the response generated along with the specific media
+	# type (mime type)
+	return Response(img_op.gen_gray_img(),
+		mimetype = "multipart/x-mixed-replace; boundary=frame")
 
