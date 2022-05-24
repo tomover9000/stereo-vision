@@ -3,10 +3,13 @@ from flask import Flask, render_template, Response
 from CameraStream import CameraStream
 import cv2
 
+CAMERA_WIDTH = 1280
+CAMERA_HEIGHT = 720
+
 #Initialize the Flask app
 app = Flask(__name__)
-camera1 = CameraStream(0)
-camera2 = CameraStream(2)
+camera1 = CameraStream(0, CAMERA_WIDTH, CAMERA_HEIGHT)
+camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
 @app.route("/")
 def index():

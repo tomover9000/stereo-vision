@@ -1,9 +1,11 @@
 import cv2
 
 class CameraStream:
-    def __init__(self, camera_id) -> None:
+    def __init__(self, camera_id, width=1280, height=720) -> None:
         self.id = camera_id
         self.cam = cv2.VideoCapture(self.id)
+        self.cam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+        self.cam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         print("Camera status: ", self.cam.isOpened())
 
     def gen_frames(self):  
