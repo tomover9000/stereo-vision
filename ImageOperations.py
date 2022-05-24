@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 from CameraStream import CameraStream
 
+DEPTH_VISUALIZATION_SCALE = 2048
+
 class ImageOperations:
     def __init__(self, camera1, camera2) -> None:
         self.cam1 = camera1
@@ -46,4 +48,4 @@ class ImageOperations:
             ret, buffer = cv2.imencode('.jpg', disparity)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame / DEPTH_VISUALIZATION_SCALE + b'\r\n')  # concat frame one by one and show result
