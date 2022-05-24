@@ -5,10 +5,10 @@
                 <h3 class="mt-5">Live Webcam</h3>
                 <img src="{{url_for('processed_image')}}" width="1280", height="720">
             </div>
-            <form action="/post_field" method="post">
-                <input type="hidden" name="this_name" value="value1" />
-                <input type="submit" value="Press Me!"/>
-            </form>
+            <form action="{{ url_for('submit') }}" method="post">
+                <textarea name="text"></textarea>
+                <input type="submit">
+            </form>            
         </div>
     </div>
     </body>
