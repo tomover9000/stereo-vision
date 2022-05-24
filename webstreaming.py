@@ -1,5 +1,6 @@
 #Import necessary libraries
-from flask import Flask, render_template, Response
+from socket import send_fds
+from flask import Flask, render_template, Response, send_file
 from CameraStream import CameraStream
 import cv2
 
@@ -29,5 +30,13 @@ def video_feed2():
 	# type (mime type)
 	return Response(camera2.gen_frames(),
 		mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+@app.route("/image1")
+def image1():
+	return send_file(camera1.get_frame(), mimetype='image/gif')
+
+@app.route("/image2")
+def image2():
+	return send_file(camera2.get_frame(), mimetype='image/gif')
     
 
