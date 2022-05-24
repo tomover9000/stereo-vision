@@ -26,8 +26,7 @@ class CameraStream:
             return
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            return frame
+            return buffer
 
     def __del__(self):
         self.cam.release()
