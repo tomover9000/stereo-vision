@@ -36,6 +36,7 @@ class CameraStream:
         if not success:
             return
         else:
+            frame = cv2.remap(frame, self.stereoMap_x, self.stereoMap_y, cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
             return frame
 
     def __del__(self):
