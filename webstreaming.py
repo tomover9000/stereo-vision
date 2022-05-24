@@ -2,6 +2,7 @@
 from flask import Flask, jsonify, render_template, Response, send_file
 from CameraStream import CameraStream
 import cv2
+import base64
 
 CAMERA_WIDTH = 1280
 CAMERA_HEIGHT = 720
@@ -32,10 +33,10 @@ camera2 = CameraStream(2, CAMERA_WIDTH, CAMERA_HEIGHT)
 
 @app.route("/get_images")
 def get_images():
-	img1 = camera1.get_frame()
-	img2 = camera2.get_frame()
+	img1_text = base64.b64encode(camera1.get_frame())
+	img2_text = base64.b64encode(camera2.get_frame())
 
 	return jsonify({
-		'img1': img1,
-		'img2': img2
+		'img1': img1_text,
+		'img2': img2_text
 	})
