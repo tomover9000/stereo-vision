@@ -1,7 +1,3 @@
-import sys
-import numpy as np
-import time
-import imutils
 import cv2
 
 # Camera parameters to undistort and rectify images

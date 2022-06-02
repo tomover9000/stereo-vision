@@ -1,8 +1,6 @@
 import numpy as np
 import cv2
 import calibration
-import functools
-import scipy.signal
 
 B = 9               #Distance between the cameras [cm]
 f = 8              #Camera lense's focal length [mm]
@@ -55,7 +53,7 @@ def calc_disp(img1, img2, block_size, max_disp):
             # # print(zDepth)
 
             # convert to 0 255 range
-            disp_map[i-block_size//2:(i+block_size//2)+1, j-block_size//2:(j+block_size//2)+1] = np.uint8((1 - disp_px/max_disp * 255)
+            disp_map[i-block_size//2:(i+block_size//2)+1, j-block_size//2:(j+block_size//2)+1] = np.uint8(1 - disp_px/max_disp * 255)
     return disp_map.astype(np.uint8)
 
 def main():
@@ -66,14 +64,13 @@ def main():
 
     img_right = cv2.cvtColor(img_right, cv2.COLOR_BGR2GRAY)
     img_left = cv2.cvtColor(img_left, cv2.COLOR_BGR2GRAY)
-
   
 
     disp_map = calc_disp(img_right, img_left, 1, 10)
     # disp_map = cv2.normalize(disp_map, disp_map, alpha=255, beta=0, norm_type=cv2.NORM_MINMAX)
-    print(disp_map.shape)
-    print(type(disp_map))
-    print(disp_map)
+    # print(disp_map.shape)
+    # print(type(disp_map))
+    # print(disp_map)
     cv2.imshow("result", disp_map)
     cv2.imwrite("disparity.png", disp_map)
     cv2.imshow("left", img_left)
