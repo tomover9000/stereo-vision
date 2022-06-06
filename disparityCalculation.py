@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import calibration
+import time
 
 B = 9               #Distance between the cameras [cm]
 f = 8              #Camera lense's focal length [mm]
@@ -31,8 +32,8 @@ def calc_disp(img1, img2, block_size, max_disp):
     block_intensity_left = np.int32(0)
     block_intensity_right = np.int32(0)
     
-    for i in range(block_size//2, rows - block_size//2, block_size):
-        for j in range(max_disp + block_size//2, cols - block_size//2 - max_disp, block_size):
+    for i in range(block_size//2, rows - block_size//2, 1):
+        for j in range(max_disp + block_size//2, cols - block_size//2 - max_disp, 1):
             block_intensity_left = np.int32(np.sum(mat_l[i-block_size//2:i+block_size//2+1, j-block_size//2:j+block_size//2+1]))
             best_match = block_intensity_left
             disp_px = 0 # disparity in pixels
@@ -65,8 +66,10 @@ def main():
     img_right = cv2.cvtColor(img_right, cv2.COLOR_BGR2GRAY)
     img_left = cv2.cvtColor(img_left, cv2.COLOR_BGR2GRAY)
   
-
-    disp_map = calc_disp(img_right, img_left, 1, 10)
+    start = time.time()
+    disp_map = calc_disp(img_right, img_left, 5, 10)
+    end = time.time()
+    print(f'Total execution time {end - start} s')
     # disp_map = cv2.normalize(disp_map, disp_map, alpha=255, beta=0, norm_type=cv2.NORM_MINMAX)
     # print(disp_map.shape)
     # print(type(disp_map))
