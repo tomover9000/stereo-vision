@@ -40,7 +40,7 @@ def calc_disp(img1, img2, block_size, max_disp):
             difference = 0
             for k in range(1, max_disp+1):
                 # compute SAD
-                block_intensity_right = np.int32(np.sum(mat_r[i-block_size//2:i+block_size//2+1, j-block_size//2+k:j+block_size//2+k+1]))
+                block_intensity_right = np.int32(np.sum(mat_r[i-block_size//2:i+block_size//2+1, j-block_size//2-k:j+block_size//2-k+1]))
                 # print(f'left: {block_intensity_left} \n right: {block_intensity_right}')
                 difference = abs(np.int32(block_intensity_left - block_intensity_right))
                 if difference < best_match:
@@ -54,7 +54,7 @@ def calc_disp(img1, img2, block_size, max_disp):
             # # print(zDepth)
 
             # convert to 0 255 range
-            disp_map[i-block_size//2:(i+block_size//2)+1, j-block_size//2:(j+block_size//2)+1] = np.uint8(1 - disp_px/max_disp * 255)
+            disp_map[i-block_size//2:(i+block_size//2)+1, j-block_size//2:(j+block_size//2)+1] = np.uint8(disp_px/max_disp * 255)
     return disp_map.astype(np.uint8)
 
 def main():
