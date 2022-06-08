@@ -1,8 +1,10 @@
+from dis import dis
 import numpy as np
 import cv2
 import calibration
 import time
 from ctypes import *
+import sys
 
 B = 9               #Distance between the cameras [cm]
 f = 8              #Camera lense's focal length [mm]
@@ -28,20 +30,25 @@ def calc_disp(img1, img2, block_size, max_disp):
     rows = mat_r.shape[0]
     cols = mat_r.shape[1]
 
+    disp_map = np.empty(shape=(mat_r.shape), dtype=np.uint8)
 
-    ptr_mat_r = mat_r.ctypes.data_as(POINTER(POINTER(c_int) * rows))
-    ptr_mat_l = mat_l.ctypes.data_as(POINTER(POINTER(c_int) * rows))
+    # print(f'Size of element in python {sys.getsizeof(np.uint8)}')
+    # print(f'Type of element {type(mat_r[0, 0])}')
+
     # C part
     libCalc = CDLL("C:\\Users\\vladz\\OneDrive - Universitatea Politehnica Bucuresti\\Licenta\\stereo-vision-local\\disparity_calc.so")
-    libCalc.disparity_calc.argtypes = [c_int, c_int, POINTER(POINTER(c_int) * rows), POINTER(POINTER(c_int) * rows), c_int, c_int]
-    libCalc.disparity_calc.restype = POINTER(POINTER(c_int) * rows)
-    disp_map_ptr = libCalc.disparity_calc(rows, cols, ptr_mat_l, ptr_mat_r, block_size, max_disp)
-    disp_map = np.frombuffer(disp_map_ptr.contents)
+    libCalc.disparity_calc.argtypes = [c_int, c_int, 
+        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
+        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
+        c_int, c_int]
+    libCalc.disparity_calc.restype = np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape))
+    disp_map = libCalc.disparity_calc(rows, cols, mat_l.astype(np.uint32), mat_r.astype(np.uint32), block_size, max_disp)
+    disp_map = disp_map.astype(np.uint8)
     return disp_map
 
 
 
-    # disp_map = np.ndarray(mat_r.shape).astype(np.uint8)
+    
 
     # block_intensity_left = np.int32(0)
     # block_intensity_right = np.int32(0)
@@ -81,7 +88,7 @@ def main():
     img_left = cv2.cvtColor(img_left, cv2.COLOR_BGR2GRAY)
   
     start = time.time()
-    disp_map = calc_disp(img_right, img_left, 5, 10)
+    disp_map = calc_disp(img_right, img_left, 7, 128)
     end = time.time()
     print(f'Total execution time {end - start} s')
     # disp_map = cv2.normalize(disp_map, disp_map, alpha=255, beta=0, norm_type=cv2.NORM_MINMAX)

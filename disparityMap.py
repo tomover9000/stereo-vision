@@ -5,8 +5,8 @@ import calibration
 DEPTH_VISUALIZATION_SCALE = 2048
 
 # Open both cameras
-cap_right = cv2.VideoCapture(0)                    
-cap_left =  cv2.VideoCapture(1)
+cap_right = cv2.VideoCapture(2)                    
+cap_left =  cv2.VideoCapture(0)
 
 win_size = 3
 # stereo = cv2.StereoSGBM_create(
