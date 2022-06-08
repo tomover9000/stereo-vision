@@ -45,9 +45,6 @@ def calc_disp(img1, img2, block_size, max_disp):
     disp_map = libCalc.disparity_calc(rows, cols, mat_l.astype(np.uint32), mat_r.astype(np.uint32), block_size, max_disp)
     disp_map = disp_map.astype(np.uint8)
     return disp_map
-
-
-
     
 
     # block_intensity_left = np.int32(0)
