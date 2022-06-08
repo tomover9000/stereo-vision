@@ -36,7 +36,7 @@ def calc_disp(img1, img2, block_size, max_disp):
     # print(f'Type of element {type(mat_r[0, 0])}')
 
     # C part
-    libCalc = CDLL("C:/Users/vladz/OneDrive - Universitatea Politehnica Bucuresti/Licenta/stereo-vision-local/disparity_calc.so")
+    libCalc = CDLL("disparity_calc.so")
     libCalc.disparity_calc.argtypes = [c_int, c_int, 
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
