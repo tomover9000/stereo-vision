@@ -1,6 +1,12 @@
-on: [push]
+
 
 name: Stereo Vision Push
+
+on:
+  push:
+    branches:
+      - main
+      - new_main
 
 jobs:
   publish-code:
