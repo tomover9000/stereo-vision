@@ -36,7 +36,7 @@ def calc_disp(img1, img2, block_size, max_disp):
     # print(f'Type of element {type(mat_r[0, 0])}')
 
     # C part
-    libCalc = CDLL("C:\\Users\\vladz\\OneDrive - Universitatea Politehnica Bucuresti\\Licenta\\stereo-vision-local\\disparity_calc.so")
+    libCalc = CDLL("C:/Users/vladz/OneDrive - Universitatea Politehnica Bucuresti/Licenta/stereo-vision-local/disparity_calc.so")
     libCalc.disparity_calc.argtypes = [c_int, c_int, 
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
@@ -79,8 +79,8 @@ def calc_disp(img1, img2, block_size, max_disp):
     # return disp_map.astype(np.uint8)
 
 def main():
-    img_right =  cv2.imread('test_images/right/imageR.png')
-    img_left = cv2.imread('test_images/left/imageL.png')
+    img_right =  cv2.imread('test_images/right/imageR0.png')
+    img_left = cv2.imread('test_images/left/imageL0.png')
 
     img_right, img_left = calibration.undistortRectify(img_right, img_left)
 
@@ -88,7 +88,7 @@ def main():
     img_left = cv2.cvtColor(img_left, cv2.COLOR_BGR2GRAY)
   
     start = time.time()
-    disp_map = calc_disp(img_right, img_left, 7, 128)
+    disp_map = calc_disp(img_right, img_left, 3, 128)
     end = time.time()
     print(f'Total execution time {end - start} s')
     # disp_map = cv2.normalize(disp_map, disp_map, alpha=255, beta=0, norm_type=cv2.NORM_MINMAX)

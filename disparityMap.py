@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import calibration
+import time
 
 DEPTH_VISUALIZATION_SCALE = 2048
 
@@ -88,8 +89,10 @@ while True:
     # Converting images into grayscale
     frame_right = cv2.cvtColor(frame_right, cv2.COLOR_BGR2GRAY)
     frame_left = cv2.cvtColor(frame_left, cv2.COLOR_BGR2GRAY)
-
+    start = time.time()
     disparity_SGBM = stereo.compute(frame_left, frame_right)
+    end = time.time()
+    print(f'Frame time {end - start} s')
 
     # Normalize the values to a range from 0..255 for a grayscale image
     disparity_SGBM = cv2.normalize(disparity_SGBM, disparity_SGBM, alpha=255,

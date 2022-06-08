@@ -1,0 +1,1 @@
+gcc -fPIC -shared -o .\disparity_calc.so .\disparity_calc.c
