@@ -1,14 +1,18 @@
+from ast import arg
 from dis import dis
 import numpy as np
+from threading import Thread
 import cv2
 import calibration
 import time
 from ctypes import *
 import os
+import sys
 
 B = 9               #Distance between the cameras [cm]
 f = 8              #Camera lense's focal length [mm]
 alpha = 56.6        #Camera field of view in the horisontal plane [degrees]
+NUM_THREADS = 4
 
 def calc_disp(img1, img2, block_size, max_disp):
 
@@ -30,19 +34,97 @@ def calc_disp(img1, img2, block_size, max_disp):
     rows = mat_r.shape[0]
     cols = mat_r.shape[1]
 
-    disp_map = np.empty(shape=(mat_r.shape), dtype=np.uint8)
+    disp_map = np.empty(shape=(mat_r.shape), dtype=np.uint32)
 
-    # print(f'Size of element in python {sys.getsizeof(np.uint8)}')
+    # print(f'Size of element in python {sys.getsizeof(disp_map[0, 0])}')
     # print(f'Type of element {type(mat_r[0, 0])}')
 
     # C part
     libCalc = CDLL(os.path.abspath("disparity_calc.so"))
-    libCalc.disparity_calc.argtypes = [c_int, c_int, 
+    libCalc.disp_calc_job.argtypes = [c_int, c_int, c_int, c_int, c_int, c_int, c_int,
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)),
         np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)),
-        c_int, c_int]
-    libCalc.disparity_calc.restype = np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape))
-    disp_map = libCalc.disparity_calc(rows, cols, mat_l.astype(np.uint32), mat_r.astype(np.uint32), block_size, max_disp)
+        c_int, c_int,
+        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape), flags='CONTIGUOUS')]
+    libCalc.disp_calc_job.restype = None
+    # libCalc.foo_func.restype = None                      #doctest: +SKIP
+    # libCalc.foo_func.argtypes = [np.ctypeslib.ndpointer(dtype=np.double, ndim=1, flags='CONTIGUOUS'), c_int]
+    # out = np.empty(15, dtype=np.double)
+    # print(out)
+    # libCalc.foo_func(out, len(out))
+    # print(out)
+
+    # disp_map = libCalc.disp_calc_job(rows, cols, mat_l.astype(np.uint32), mat_r.astype(np.uint32), block_size, max_disp)
+    threads = []
+    arguments = ()
+    # Create and start threads
+    for t in range(1):
+        if t == 0:
+            arguments = (
+                t,
+                rows,
+                cols,
+                block_size//2,
+                rows//2,
+                block_size//2,
+                cols//2,
+                mat_l.astype(np.uint32),
+                mat_r.astype(np.uint32),
+                block_size,
+                max_disp,
+                disp_map.astype(np.uint32)
+            )
+        elif t == 1:
+            arguments = (
+                t,
+                rows,
+                cols,
+                block_size//2,
+                rows//2,
+                cols//2,
+                cols - block_size//2,
+                mat_l.astype(np.uint32),
+                mat_r.astype(np.uint32),
+                block_size,
+                max_disp,
+                disp_map.astype(np.uint32)
+            )
+        elif t == 2:
+            arguments = (
+                t,
+                rows,
+                cols,
+                rows//2,
+                rows - block_size//2,
+                block_size//2,
+                cols//2,
+                mat_l.astype(np.uint32),
+                mat_r.astype(np.uint32),
+                block_size,
+                max_disp,
+                disp_map.astype(np.uint32)
+            )
+        elif t == 3:
+            arguments = (
+                t,
+                rows,
+                cols,
+                rows//2,  # start row
+                rows - block_size//2, # end row
+                cols//2, # start col
+                cols - block_size//2, # end col
+                mat_l.astype(np.uint32),
+                mat_r.astype(np.uint32),
+                block_size,
+                max_disp,
+                disp_map.astype(np.uint32)
+            )
+        threads.append(Thread(target=libCalc.disp_calc_job, args=arguments))
+        threads[t].start()
+    # wait for threads to finish
+    for thread in threads:
+        thread.join()
+
     disp_map = disp_map.astype(np.uint8)
     return disp_map
     
