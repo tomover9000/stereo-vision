@@ -10,5 +10,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-      - name: Run GitHub File Sync
-        uses: BetaHuhn/repo-file-sync-action@v1
+  build:
+    steps:
+    - name: Build C File
+      run: gcc -fPIC -shared -o disparity_calc.so disparity_calc.c

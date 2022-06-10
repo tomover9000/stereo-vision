@@ -38,15 +38,14 @@ def calc_disp(img1, img2, block_size, max_disp):
     # C part
     libCalc = CDLL(os.path.abspath("disparity_calc.so"))
     libCalc.disparity_calc.argtypes = [c_int, c_int, 
-        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
-        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)), 
+        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)),
+        np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape)),
         c_int, c_int]
     libCalc.disparity_calc.restype = np.ctypeslib.ndpointer(dtype=np.uint32, shape=(mat_r.shape))
     disp_map = libCalc.disparity_calc(rows, cols, mat_l.astype(np.uint32), mat_r.astype(np.uint32), block_size, max_disp)
     disp_map = disp_map.astype(np.uint8)
     return disp_map
     
-
     # block_intensity_left = np.int32(0)
     # block_intensity_right = np.int32(0)
     
