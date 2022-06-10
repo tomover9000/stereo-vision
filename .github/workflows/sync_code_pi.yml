@@ -1,16 +1,14 @@
-name: Sync Files
+name: Sync and Build
 on:
   push:
     branches:
       - new_main
   workflow_dispatch:
 jobs:
-  sync:
+  sync_build:
     runs-on: self-hosted
     steps:
       - name: Checkout Repository
         uses: actions/checkout@master
-  build:
-    steps:
-    - name: Build C File
-      run: gcc -fPIC -shared -o disparity_calc.so disparity_calc.c
+      - name: Build C File
+        run: gcc -fPIC -shared -o disparity_calc.so disparity_calc.c
